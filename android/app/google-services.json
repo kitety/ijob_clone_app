@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "25896527197",
+    "project_id": "ijob-clone-app-a61b6",
+    "storage_bucket": "ijob-clone-app-a61b6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:25896527197:android:887a5b4377813d305f74b4",
+        "android_client_info": {
+          "package_name": "kitety.ijob_clone_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmULHuaiRLjkhBArt8SEoK_IBLS9ax7Bk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
