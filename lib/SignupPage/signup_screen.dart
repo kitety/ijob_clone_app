@@ -174,19 +174,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                             return null;
                           },
                           style: const TextStyle(color: Colors.white),
-                          decoration: const InputDecoration(
-                            hintText: 'Email',
-                            hintStyle: TextStyle(color: Colors.white),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            errorBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.red),
-                            ),
-                          ),
+                          decoration: _buildInputDecoration('Email'),
                         ),
                         const SizedBox(height: 20),
                         TextFormField(
@@ -246,19 +234,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                             return null;
                           },
                           style: const TextStyle(color: Colors.white),
-                          decoration: const InputDecoration(
-                            hintText: 'Phone Number',
-                            hintStyle: TextStyle(color: Colors.white),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            errorBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.red),
-                            ),
-                          ),
+                          decoration: _buildInputDecoration('Phone Number'),
                         ),
                         const SizedBox(height: 20),
                         TextFormField(
@@ -272,19 +248,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                             return null;
                           },
                           style: const TextStyle(color: Colors.white),
-                          decoration: const InputDecoration(
-                            hintText: 'Company Address',
-                            hintStyle: TextStyle(color: Colors.white),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            errorBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.red),
-                            ),
-                          ),
+                          decoration: _buildInputDecoration('Company Address'),
                         ),
                       ],
                     ),
@@ -294,6 +258,22 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  _buildInputDecoration(String text) {
+    return InputDecoration(
+      hintText: text,
+      hintStyle: const TextStyle(color: Colors.white),
+      enabledBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(color: Colors.white),
+      ),
+      focusedBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(color: Colors.white),
+      ),
+      errorBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(color: Colors.red),
       ),
     );
   }
