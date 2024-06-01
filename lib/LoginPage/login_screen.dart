@@ -72,11 +72,11 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
           Container(
             color: Colors.black54,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 80),
+              padding: const EdgeInsets.only(left: 16, top: 80, right: 16),
               child: ListView(
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 80),
+                    padding: const EdgeInsets.symmetric(horizontal: 80),
                     child: Image.asset('assets/images/login.png'),
                   ),
                   const SizedBox(height: 15),
