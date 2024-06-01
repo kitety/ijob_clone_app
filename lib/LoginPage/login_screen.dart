@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ijob_clone_app/ForgetPassword/forget_password_screen.dart';
 import 'package:ijob_clone_app/Services/global_variables.dart';
 
 import '../Services/global_methods.dart';
+import '../SignupPage/signup_screen.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -196,6 +198,43 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                                     fontSize: 20,
                                   ),
                                 )
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 40),
+                        Center(
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                const TextSpan(
+                                  text: 'Don\'t have an account? ',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const TextSpan(text: '  '),
+                                TextSpan(
+                                  text: 'SingUp',
+                                  style: const TextStyle(
+                                    color: Colors.cyan,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return const SignUp();
+                                          },
+                                        ),
+                                      );
+                                    },
+                                ),
                               ],
                             ),
                           ),
