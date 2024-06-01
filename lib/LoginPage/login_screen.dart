@@ -15,8 +15,11 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
 
   final TextEditingController _emailController =
       TextEditingController(text: '');
+  final TextEditingController _passwordController =
+      TextEditingController(text: '');
   final FocusNode _passFocusNode = FocusNode();
   final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
+  bool _obscureText = false;
 
   @override
   void dispose() {
@@ -84,9 +87,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                           validator: (value) {
                             if (value!.isEmpty || !value.contains('@')) {
                               return 'Please enter a valid email address';
-                            } else {
-                              return null;
                             }
+                            return null;
                           },
                           style: const TextStyle(color: Colors.white),
                           decoration: const InputDecoration(
@@ -99,6 +101,48 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                               borderSide: BorderSide(color: Colors.white),
                             ),
                             errorBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        TextFormField(
+                          textInputAction: TextInputAction.next,
+                          focusNode: _passFocusNode,
+                          keyboardType: TextInputType.visiblePassword,
+                          controller: _passwordController,
+                          obscureText: !_obscureText,
+                          // change it dynamically
+                          validator: (value) {
+                            if (value!.isEmpty || value.length < 7) {
+                              return 'Please enter a valid password';
+                            }
+                            return null;
+                          },
+                          style: const TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                            suffixIcon: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _obscureText = !_obscureText;
+                                });
+                              },
+                              child: Icon(
+                                _obscureText
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Colors.white,
+                              ),
+                            ),
+                            hintText: 'Password',
+                            hintStyle: const TextStyle(color: Colors.white),
+                            enabledBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            errorBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.red),
                             ),
                           ),
