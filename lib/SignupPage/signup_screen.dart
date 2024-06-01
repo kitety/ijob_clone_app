@@ -18,11 +18,22 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
 
   final GlobalKey<FormState> _signupFormKey = GlobalKey<FormState>();
   File? imageFile;
+  final TextEditingController _emailController =
+      TextEditingController(text: '');
+  final TextEditingController _nameController = TextEditingController(text: '');
+  final TextEditingController _passwordController =
+      TextEditingController(text: '');
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _passFocusNode = FocusNode();
   bool _obscureText = false;
 
   @override
   void dispose() {
+    _emailFocusNode.dispose();
+    _passFocusNode.dispose();
     _animationController.dispose();
+    _passwordController.dispose();
+    _nameController.dispose();
     super.dispose();
   }
 
@@ -106,6 +117,63 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                             ),
                           ),
                         ),
+                        const SizedBox(height: 20),
+                        TextFormField(
+                          textInputAction: TextInputAction.next,
+                          onEditingComplete: () => FocusScope.of(context)
+                              .requestFocus(_emailFocusNode),
+                          keyboardType: TextInputType.name,
+                          controller: _nameController,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'This field is missing';
+                            }
+                            return null;
+                          },
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            hintText: 'Full Name / Company Name',
+                            hintStyle: TextStyle(color: Colors.white),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            errorBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        TextFormField(
+                          textInputAction: TextInputAction.next,
+                          onEditingComplete: () => FocusScope.of(context)
+                              .requestFocus(_passFocusNode),
+                          keyboardType: TextInputType.emailAddress,
+                          controller: _emailController,
+                          validator: (value) {
+                            if (value!.isEmpty || !value.contains('@')) {
+                              return 'Please enter a valid email address';
+                            }
+                            return null;
+                          },
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            hintText: 'Email',
+                            hintStyle: TextStyle(color: Colors.white),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            errorBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
                       ],
                     ),
                   )
