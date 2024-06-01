@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ijob_clone_app/ForgetPassword/forget_password_screen.dart';
 import 'package:ijob_clone_app/Services/global_variables.dart';
@@ -20,7 +21,9 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
       TextEditingController(text: '');
   final FocusNode _passFocusNode = FocusNode();
   final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   bool _obscureText = false;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -163,9 +166,37 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                             child: const Text(
                               'Forgot Password?',
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 17,
-                                  fontStyle: FontStyle.italic),
+                                color: Colors.white,
+                                fontSize: 17,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        MaterialButton(
+                          onPressed: () {
+                            _submitFormOnLogin();
+                          },
+                          color: Colors.cyan,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(13),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 14),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Login',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                )
+                              ],
                             ),
                           ),
                         )
@@ -179,5 +210,27 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
         ],
       ),
     );
+  }
+
+  void _submitFormOnLogin() async {
+    final isValid = _loginFormKey.currentState!.validate();
+    if (isValid) {
+      setState(() {
+        _isLoading = true;
+      });
+      try {
+        await _firebaseAuth.signInWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+        if (mounted) {
+          Navigator.canPop(context) ? Navigator.pop(context) : null;
+        }
+      } catch (e) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 }
