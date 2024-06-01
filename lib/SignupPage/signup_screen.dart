@@ -18,22 +18,37 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
 
   final GlobalKey<FormState> _signupFormKey = GlobalKey<FormState>();
   File? imageFile;
+
   final TextEditingController _emailController =
       TextEditingController(text: '');
   final TextEditingController _nameController = TextEditingController(text: '');
+  final TextEditingController _phoneNumberController =
+      TextEditingController(text: '');
   final TextEditingController _passwordController =
       TextEditingController(text: '');
+  final TextEditingController _locationController =
+      TextEditingController(text: '');
+
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passFocusNode = FocusNode();
+  final FocusNode _phoneNumberFocusNode = FocusNode();
+  final FocusNode _positionCPFocusNode = FocusNode();
   bool _obscureText = false;
 
   @override
   void dispose() {
     _emailFocusNode.dispose();
     _passFocusNode.dispose();
+    _phoneNumberFocusNode.dispose();
+    _positionCPFocusNode.dispose();
+
     _animationController.dispose();
     _passwordController.dispose();
     _nameController.dispose();
+    _phoneNumberController.dispose();
+    _emailController.dispose();
+    _locationController.dispose();
+
     super.dispose();
   }
 
@@ -78,7 +93,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
             color: Colors.black45,
             width: double.infinity,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 80),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 80),
               child: ListView(
                 children: [
                   Form(
@@ -174,6 +189,103 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                           ),
                         ),
                         const SizedBox(height: 20),
+                        TextFormField(
+                          textInputAction: TextInputAction.next,
+                          focusNode: _passFocusNode,
+                          onEditingComplete: () => FocusScope.of(context)
+                              .requestFocus(_phoneNumberFocusNode),
+                          keyboardType: TextInputType.visiblePassword,
+                          controller: _passwordController,
+                          obscureText: !_obscureText,
+                          // change it dynamically
+                          validator: (value) {
+                            if (value!.isEmpty || value.length < 7) {
+                              return 'Please enter a valid password';
+                            }
+                            return null;
+                          },
+                          style: const TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                            suffixIcon: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _obscureText = !_obscureText;
+                                });
+                              },
+                              child: Icon(
+                                _obscureText
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Colors.white,
+                              ),
+                            ),
+                            hintText: 'Password',
+                            hintStyle: const TextStyle(color: Colors.white),
+                            enabledBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            errorBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        TextFormField(
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.phone,
+                          controller: _phoneNumberController,
+                          onEditingComplete: () => FocusScope.of(context)
+                              .requestFocus(_positionCPFocusNode),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'This field is missing';
+                            }
+                            return null;
+                          },
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            hintText: 'Phone Number',
+                            hintStyle: TextStyle(color: Colors.white),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            errorBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        TextFormField(
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.text,
+                          controller: _locationController,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'This field is missing';
+                            }
+                            return null;
+                          },
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            hintText: 'Company Address',
+                            hintStyle: TextStyle(color: Colors.white),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            errorBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   )
