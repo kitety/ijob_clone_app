@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:ijob_clone_app/ForgetPassword/forget_password_screen.dart';
 import 'package:ijob_clone_app/Services/global_variables.dart';
 
 class Login extends StatefulWidget {
@@ -147,6 +148,27 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                             ),
                           ),
                         ),
+                        const SizedBox(height: 15),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: TextButton(
+                            onPressed: () {
+                              Navigator.pop(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ForgetPassword(),
+                                ),
+                              );
+                            },
+                            child: const Text(
+                              'Forgot Password?',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 17,
+                                  fontStyle: FontStyle.italic),
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),
