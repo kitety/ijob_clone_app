@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:ijob_clone_app/ForgetPassword/forget_password_screen.dart';
 import 'package:ijob_clone_app/Services/global_variables.dart';
 
+import '../Services/global_methods.dart';
+
 class Login extends StatefulWidget {
   const Login({super.key});
 
@@ -175,9 +177,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                         ),
                         const SizedBox(height: 10),
                         MaterialButton(
-                          onPressed: () {
-                            _submitFormOnLogin();
-                          },
+                          onPressed: _submitFormOnLogin,
                           color: Colors.cyan,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
@@ -227,6 +227,14 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
           Navigator.canPop(context) ? Navigator.pop(context) : null;
         }
       } catch (e) {
+        if (mounted) {
+          GlobalMethods.showErrorDialog(
+            error: e.toString(),
+            ctx: context,
+          );
+          print('error occurred ${e.toString()}');
+        }
+      } finally {
         setState(() {
           _isLoading = false;
         });
