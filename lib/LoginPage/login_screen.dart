@@ -31,8 +31,11 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    super.dispose();
     _animationController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _passFocusNode.dispose();
+    super.dispose();
   }
 
   @override
