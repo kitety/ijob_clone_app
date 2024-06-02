@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../Services/global_variables.dart';
 
@@ -359,6 +361,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                 InkWell(
                   onTap: () {
                     // capture image from camera
+                    _getFromCamera();
                   },
                   child: const Row(
                     children: [
@@ -381,6 +384,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                 InkWell(
                   onTap: () {
                     // get image from gallery
+                    _getFromGallery();
                   },
                   child: const Row(
                     children: [
@@ -404,5 +408,37 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
             ),
           );
         });
+  }
+
+  void _getFromCamera() async {
+    XFile? pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+    _cropImage(pickedFile!.path);
+
+    if (mounted) {
+      Navigator.pop(context);
+    }
+  }
+
+  void _getFromGallery() async {
+    XFile? pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    _cropImage(pickedFile!.path);
+    if (mounted) {
+      Navigator.pop(context);
+    }
+  }
+
+  void _cropImage(String filePath) async {
+    CroppedFile? croppedImage = await ImageCropper().cropImage(
+      sourcePath: filePath,
+      maxHeight: 1080,
+      maxWidth: 1080,
+    );
+    if (croppedImage != null) {
+      setState(() {
+        imageFile = File(croppedImage.path);
+      });
+    }
   }
 }

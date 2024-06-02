@@ -220,7 +220,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                                 ),
                                 const TextSpan(text: '  '),
                                 TextSpan(
-                                  text: 'SingUp',
+                                  text: 'Sign Up',
                                   style: const TextStyle(
                                     color: Colors.cyan,
                                     fontWeight: FontWeight.bold,
