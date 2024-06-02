@@ -1,8 +1,12 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:ijob_clone_app/Services/global_methods.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -36,8 +40,11 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
   final FocusNode _passFocusNode = FocusNode();
   final FocusNode _phoneNumberFocusNode = FocusNode();
   final FocusNode _positionCPFocusNode = FocusNode();
+
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   bool _obscureText = false;
   bool _isLoading = false;
+  String imageUrl = '';
 
   @override
   void dispose() {
@@ -47,6 +54,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
     _positionCPFocusNode.dispose();
 
     _animationController.dispose();
+
     _passwordController.dispose();
     _nameController.dispose();
     _phoneNumberController.dispose();
@@ -266,6 +274,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                               : MaterialButton(
                                   onPressed: () {
                                     // Create submit form on sign
+                                    _submitFormOnSignUp();
                                   },
                                   color: Colors.cyan,
                                   elevation: 8,
@@ -439,6 +448,54 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
       setState(() {
         imageFile = File(croppedImage.path);
       });
+    }
+  }
+
+  void _submitFormOnSignUp() async {
+    final isValid = _signupFormKey.currentState!.validate();
+    if (isValid) {
+      if (imageFile == null) {
+        GlobalMethods.showErrorDialog(
+            error: 'Please pick an image', ctx: context);
+        return;
+      }
+      setState(() {
+        _isLoading = true;
+      });
+      try {
+        await _firebaseAuth.createUserWithEmailAndPassword(
+          email: _emailController.text.trim().toLowerCase(),
+          password: _passwordController.text.trim(),
+        );
+        final User? user = _firebaseAuth.currentUser;
+        final uid = user!.uid;
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('userImages')
+            .child('$uid.jpg');
+        await ref.putFile(imageFile!);
+        imageUrl = await ref.getDownloadURL();
+        FirebaseFirestore.instance.collection('users').doc(uid).set({
+          'id': uid,
+          'name': _nameController.text,
+          'email': _emailController.text,
+          'phoneNumber': _phoneNumberController.text,
+          'location': _locationController.text,
+          'userImage': imageUrl,
+          'createAt': Timestamp.now(),
+        });
+        if (mounted) {
+          Navigator.canPop(context) ? Navigator.pop(context) : null;
+        }
+      } catch (e) {
+        if (mounted) {
+          GlobalMethods.showErrorDialog(error: e.toString(), ctx: context);
+        }
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 }
