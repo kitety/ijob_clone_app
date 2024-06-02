@@ -104,9 +104,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                       child: Column(
                         children: [
                           GestureDetector(
-                            onTap: () {
-                              // create ShowImageDialog
-                            },
+                            onTap: _showImageDialog,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Container(
@@ -347,5 +345,64 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
         borderSide: BorderSide(color: Colors.red),
       ),
     );
+  }
+
+  void _showImageDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Please Choose an option'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                InkWell(
+                  onTap: () {
+                    // capture image from camera
+                  },
+                  child: const Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(4),
+                        child: Icon(
+                          Icons.camera,
+                          color: Colors.purple,
+                        ),
+                      ),
+                      Text(
+                        'Camera',
+                        style: TextStyle(
+                          color: Colors.purple,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    // get image from gallery
+                  },
+                  child: const Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(4),
+                        child: Icon(
+                          Icons.image,
+                          color: Colors.purple,
+                        ),
+                      ),
+                      Text(
+                        'Gallery',
+                        style: TextStyle(
+                          color: Colors.purple,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
   }
 }
