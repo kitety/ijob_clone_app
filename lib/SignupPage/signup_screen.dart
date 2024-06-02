@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../Services/global_variables.dart';
@@ -34,6 +35,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
   final FocusNode _phoneNumberFocusNode = FocusNode();
   final FocusNode _positionCPFocusNode = FocusNode();
   bool _obscureText = false;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -92,168 +94,237 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
           Container(
             color: Colors.black45,
             width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 80),
-              child: ListView(
-                children: [
-                  Form(
-                    key: _signupFormKey,
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            // create ShowImageDialog
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              width: size.width * 0.24,
-                              height: size.width * 0.24,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  width: 1,
-                                  color: Colors.cyan,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 80),
+                child: ListView(
+                  children: [
+                    Form(
+                      key: _signupFormKey,
+                      child: Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              // create ShowImageDialog
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                width: size.width * 0.24,
+                                height: size.width * 0.24,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 1,
+                                    color: Colors.cyan,
+                                  ),
+                                  borderRadius: BorderRadius.circular(20),
                                 ),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(16),
-                                child: imageFile == null
-                                    ? const Icon(
-                                        Icons.camera_enhance_sharp,
-                                        size: 30,
-                                        color: Colors.cyan,
-                                      )
-                                    : Image.file(
-                                        imageFile!,
-                                        fit: BoxFit.fill,
-                                      ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(16),
+                                  child: imageFile == null
+                                      ? const Icon(
+                                          Icons.camera_enhance_sharp,
+                                          size: 30,
+                                          color: Colors.cyan,
+                                        )
+                                      : Image.file(
+                                          imageFile!,
+                                          fit: BoxFit.fill,
+                                        ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 20),
-                        TextFormField(
-                          textInputAction: TextInputAction.next,
-                          onEditingComplete: () => FocusScope.of(context)
-                              .requestFocus(_emailFocusNode),
-                          keyboardType: TextInputType.name,
-                          controller: _nameController,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'This field is missing';
-                            }
-                            return null;
-                          },
-                          style: const TextStyle(color: Colors.white),
-                          decoration: const InputDecoration(
-                            hintText: 'Full Name / Company Name',
-                            hintStyle: TextStyle(color: Colors.white),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            errorBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.red),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        TextFormField(
-                          textInputAction: TextInputAction.next,
-                          onEditingComplete: () => FocusScope.of(context)
-                              .requestFocus(_passFocusNode),
-                          keyboardType: TextInputType.emailAddress,
-                          controller: _emailController,
-                          validator: (value) {
-                            if (value!.isEmpty || !value.contains('@')) {
-                              return 'Please enter a valid email address';
-                            }
-                            return null;
-                          },
-                          style: const TextStyle(color: Colors.white),
-                          decoration: _buildInputDecoration('Email'),
-                        ),
-                        const SizedBox(height: 20),
-                        TextFormField(
-                          textInputAction: TextInputAction.next,
-                          focusNode: _passFocusNode,
-                          onEditingComplete: () => FocusScope.of(context)
-                              .requestFocus(_phoneNumberFocusNode),
-                          keyboardType: TextInputType.visiblePassword,
-                          controller: _passwordController,
-                          obscureText: !_obscureText,
-                          // change it dynamically
-                          validator: (value) {
-                            if (value!.isEmpty || value.length < 7) {
-                              return 'Please enter a valid password';
-                            }
-                            return null;
-                          },
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            suffixIcon: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _obscureText = !_obscureText;
-                                });
-                              },
-                              child: Icon(
-                                _obscureText
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                                color: Colors.white,
+                          const SizedBox(height: 20),
+                          TextFormField(
+                            textInputAction: TextInputAction.next,
+                            onEditingComplete: () => FocusScope.of(context)
+                                .requestFocus(_emailFocusNode),
+                            keyboardType: TextInputType.name,
+                            controller: _nameController,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'This field is missing';
+                              }
+                              return null;
+                            },
+                            style: const TextStyle(color: Colors.white),
+                            decoration: const InputDecoration(
+                              hintText: 'Full Name / Company Name',
+                              hintStyle: TextStyle(color: Colors.white),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                              errorBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red),
                               ),
                             ),
-                            hintText: 'Password',
-                            hintStyle: const TextStyle(color: Colors.white),
-                            enabledBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            focusedBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            errorBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.red),
+                          ),
+                          const SizedBox(height: 20),
+                          TextFormField(
+                            textInputAction: TextInputAction.next,
+                            onEditingComplete: () => FocusScope.of(context)
+                                .requestFocus(_passFocusNode),
+                            keyboardType: TextInputType.emailAddress,
+                            controller: _emailController,
+                            validator: (value) {
+                              if (value!.isEmpty || !value.contains('@')) {
+                                return 'Please enter a valid email address';
+                              }
+                              return null;
+                            },
+                            style: const TextStyle(color: Colors.white),
+                            decoration: _buildInputDecoration('Email'),
+                          ),
+                          const SizedBox(height: 20),
+                          TextFormField(
+                            textInputAction: TextInputAction.next,
+                            focusNode: _passFocusNode,
+                            onEditingComplete: () => FocusScope.of(context)
+                                .requestFocus(_phoneNumberFocusNode),
+                            keyboardType: TextInputType.visiblePassword,
+                            controller: _passwordController,
+                            obscureText: !_obscureText,
+                            // change it dynamically
+                            validator: (value) {
+                              if (value!.isEmpty || value.length < 7) {
+                                return 'Please enter a valid password';
+                              }
+                              return null;
+                            },
+                            style: const TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              suffixIcon: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _obscureText = !_obscureText;
+                                  });
+                                },
+                                child: Icon(
+                                  _obscureText
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              hintText: 'Password',
+                              hintStyle: const TextStyle(color: Colors.white),
+                              enabledBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                              focusedBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                              errorBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red),
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 20),
-                        TextFormField(
-                          textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.phone,
-                          controller: _phoneNumberController,
-                          onEditingComplete: () => FocusScope.of(context)
-                              .requestFocus(_positionCPFocusNode),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'This field is missing';
-                            }
-                            return null;
-                          },
-                          style: const TextStyle(color: Colors.white),
-                          decoration: _buildInputDecoration('Phone Number'),
-                        ),
-                        const SizedBox(height: 20),
-                        TextFormField(
-                          textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.text,
-                          controller: _locationController,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'This field is missing';
-                            }
-                            return null;
-                          },
-                          style: const TextStyle(color: Colors.white),
-                          decoration: _buildInputDecoration('Company Address'),
-                        ),
-                      ],
+                          const SizedBox(height: 20),
+                          TextFormField(
+                            textInputAction: TextInputAction.next,
+                            keyboardType: TextInputType.phone,
+                            controller: _phoneNumberController,
+                            onEditingComplete: () => FocusScope.of(context)
+                                .requestFocus(_positionCPFocusNode),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'This field is missing';
+                              }
+                              return null;
+                            },
+                            style: const TextStyle(color: Colors.white),
+                            decoration: _buildInputDecoration('Phone Number'),
+                          ),
+                          const SizedBox(height: 20),
+                          TextFormField(
+                            textInputAction: TextInputAction.next,
+                            keyboardType: TextInputType.text,
+                            controller: _locationController,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'This field is missing';
+                              }
+                              return null;
+                            },
+                            style: const TextStyle(color: Colors.white),
+                            decoration:
+                                _buildInputDecoration('Company Address'),
+                          ),
+                          const SizedBox(height: 25),
+                          _isLoading
+                              ? const Center(
+                                  child: SizedBox(
+                                    width: 70,
+                                    height: 70,
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                )
+                              : MaterialButton(
+                                  onPressed: () {
+                                    // Create submit form on sign
+                                  },
+                                  color: Colors.cyan,
+                                  elevation: 8,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(13)),
+                                  child: const Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 14),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Sign Up',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                          const SizedBox(height: 40),
+                          Center(
+                            child: RichText(
+                              text: TextSpan(
+                                children: [
+                                  const TextSpan(
+                                    text: 'Already have an account? ',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  const TextSpan(text: '  '),
+                                  TextSpan(
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () => Navigator.canPop(context)
+                                          ? Navigator.pop(context)
+                                          : null,
+                                    text: 'Login',
+                                    style: const TextStyle(
+                                      color: Colors.cyan,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  )
-                ],
+                    const SizedBox(height: 80),
+                  ],
+                ),
               ),
             ),
           ),
