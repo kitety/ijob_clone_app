@@ -181,30 +181,38 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        MaterialButton(
-                          onPressed: _submitFormOnLogin,
-                          color: Colors.cyan,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(13),
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 14),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Login',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
+                        _isLoading
+                            ? const Center(
+                                child: SizedBox(
+                                  width: 70,
+                                  height: 70,
+                                  child: CircularProgressIndicator(),
+                                ),
+                              )
+                            : MaterialButton(
+                                onPressed: _submitFormOnLogin,
+                                color: Colors.cyan,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(13),
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 14),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Login',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
+                                ),
+                              ),
                         const SizedBox(height: 40),
                         Center(
                           child: RichText(
