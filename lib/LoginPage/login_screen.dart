@@ -163,7 +163,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                           alignment: Alignment.bottomRight,
                           child: TextButton(
                             onPressed: () {
-                              Navigator.pop(
+                              Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => const ForgetPassword(),
