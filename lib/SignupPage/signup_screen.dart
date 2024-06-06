@@ -475,7 +475,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
             .child('$uid.jpg');
         await ref.putFile(imageFile!);
         imageUrl = await ref.getDownloadURL();
-        FirebaseFirestore.instance.collection('users').doc(uid).set({
+        await FirebaseFirestore.instance.collection('users').doc(uid).set({
           'id': uid,
           'name': _nameController.text,
           'email': _emailController.text,
