@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ijob_clone_app/user_state.dart';
 
 class JobsScreen extends StatefulWidget {
   const JobsScreen({super.key});
@@ -14,23 +13,36 @@ class _JobsScreenState extends State<JobsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Jobs Screen'),
-        centerTitle: false,
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.deepOrange.shade300,
+            Colors.blueAccent,
+          ],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          stops: const [0.2, 0.9],
+        ),
       ),
-      body: ElevatedButton(
-          onPressed: () {
-            _firebaseAuth.signOut();
-            Navigator.canPop(context) ? Navigator.pop(context) : null;
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const UserState(),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.deepOrange.shade300,
+                  Colors.blueAccent,
+                ],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                stops: const [0.2, 0.9],
               ),
-            );
-          },
-          child: const Text('Logout')),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
