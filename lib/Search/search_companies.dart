@@ -1,18 +1,15 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../Widgets/bottom_nav_bar.dart';
 
-class JobsScreen extends StatefulWidget {
-  const JobsScreen({super.key});
+class AllWorkersScreen extends StatefulWidget {
+  const AllWorkersScreen({super.key});
 
   @override
-  State<JobsScreen> createState() => _JobsScreenState();
+  State<AllWorkersScreen> createState() => _AllWorkerState();
 }
 
-class _JobsScreenState extends State<JobsScreen> {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-
+class _AllWorkerState extends State<AllWorkersScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,11 +26,11 @@ class _JobsScreenState extends State<JobsScreen> {
       ),
       child: SafeArea(
         child: Scaffold(
-          bottomNavigationBar: const BottomNavigationBarForApp(indexNum: 0),
           backgroundColor: Colors.transparent,
+          bottomNavigationBar: const BottomNavigationBarForApp(indexNum: 1),
           appBar: AppBar(
             title: const Text(
-              'Job Screen',
+              'All Workers Screen',
               style: TextStyle(color: Colors.white),
             ),
             centerTitle: true,
