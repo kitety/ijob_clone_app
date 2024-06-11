@@ -1,5 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:ijob_clone_app/Jobs/upload_job.dart';
 import 'package:ijob_clone_app/Search/search_companies.dart';
 
 import '../Jobs/jobs_screen.dart';
@@ -22,6 +23,7 @@ class BottomNavigationBarForApp extends StatelessWidget {
       items: const [
         Icon(Icons.list, size: 19, color: Colors.black),
         Icon(Icons.search, size: 19, color: Colors.black),
+        Icon(Icons.add, size: 19, color: Colors.black),
       ],
       onTap: (index) {
         if (index == 0) {
@@ -40,6 +42,16 @@ class BottomNavigationBarForApp extends StatelessWidget {
             CustomPageRoute(
               builder: (context) {
                 return const AllWorkersScreen();
+              },
+            ),
+          );
+        }
+        if (index == 2) {
+          Navigator.pushReplacement(
+            context,
+            CustomPageRoute(
+              builder: (context) {
+                return const UploadJobNow();
               },
             ),
           );
