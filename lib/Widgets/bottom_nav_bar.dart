@@ -27,7 +27,7 @@ class BottomNavigationBarForApp extends StatelessWidget {
         if (index == 0) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(
+            CustomPageRoute(
               builder: (context) {
                 return const JobsScreen();
               },
@@ -37,7 +37,7 @@ class BottomNavigationBarForApp extends StatelessWidget {
         if (index == 1) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(
+            CustomPageRoute(
               builder: (context) {
                 return const AllWorkersScreen();
               },
@@ -45,6 +45,25 @@ class BottomNavigationBarForApp extends StatelessWidget {
           );
         }
       },
+    );
+  }
+}
+
+class CustomPageRoute<T> extends MaterialPageRoute<T> {
+  CustomPageRoute({required super.builder, super.settings});
+
+  @override
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation, Widget child) {
+    if (settings.name == '/') {
+      return child;
+    }
+    return SlideTransition(
+      position: Tween<Offset>(
+        begin: const Offset(0.0, 0.0),
+        end: Offset.zero,
+      ).animate(animation),
+      child: child,
     );
   }
 }
