@@ -48,6 +48,36 @@ class _UploadJobNowState extends State<UploadJobNow> {
               ),
             ),
           ),
+          body: const Center(
+            child: Padding(
+              padding: EdgeInsets.all(7.0),
+              child: Card(
+                color: Colors.white10,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'Please fill all fields',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Signatra'),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );
