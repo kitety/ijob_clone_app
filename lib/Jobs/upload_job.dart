@@ -13,9 +13,10 @@ class _UploadJobNowState extends State<UploadJobNow> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _jobCategoryController =
       TextEditingController(text: 'Select Job Category');
-  final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
-  final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _jobTitleController = TextEditingController();
+  final TextEditingController _jobDescription = TextEditingController();
+  final TextEditingController _jobDeadlineDateController =
+      TextEditingController();
 
   Widget _textTitles({required String label}) {
     return Padding(
@@ -58,21 +59,21 @@ class _UploadJobNowState extends State<UploadJobNow> {
           maxLines: valueKey == 'JobDescription' ? 3 : 1,
           maxLength: maxLength,
           keyboardType: TextInputType.text,
-          decoration: const InputDecoration(
-            counterText: "",
+          decoration: InputDecoration(
+            counterText: enable ? null : "",
             filled: true,
             fillColor: Colors.black54,
-            enabledBorder: UnderlineInputBorder(
+            enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(
                 color: Colors.black,
               ),
             ),
-            focusedBorder: UnderlineInputBorder(
+            focusedBorder: const UnderlineInputBorder(
               borderSide: BorderSide(
                 color: Colors.black,
               ),
             ),
-            errorBorder: UnderlineInputBorder(
+            errorBorder: const UnderlineInputBorder(
               borderSide: BorderSide(
                 color: Colors.red,
               ),
@@ -165,7 +166,31 @@ class _UploadJobNowState extends State<UploadJobNow> {
                                 enable: false,
                                 fct: () {},
                                 maxLength: 100,
-                              )
+                              ),
+                              _textTitles(label: 'Job Title :'),
+                              _textFormFields(
+                                valueKey: 'JobTitle',
+                                controller: _jobTitleController,
+                                enable: true,
+                                fct: () {},
+                                maxLength: 100,
+                              ),
+                              _textTitles(label: 'Job Description :'),
+                              _textFormFields(
+                                valueKey: 'JobDescription',
+                                controller: _jobDescription,
+                                enable: true,
+                                fct: () {},
+                                maxLength: 200,
+                              ),
+                              _textTitles(label: 'Job Deadline :'),
+                              _textFormFields(
+                                valueKey: 'JobDeadline',
+                                controller: _jobDeadlineDateController,
+                                enable: true,
+                                fct: () {},
+                                maxLength: 100,
+                              ),
                             ],
                           ),
                         ),
